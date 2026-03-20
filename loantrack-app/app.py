@@ -15,18 +15,17 @@ class User(db.Model):
     password = db.Column(db.String(50))
     role = db.Column(db.String(20))
 
-# CREATE DB
+# CREATE DATABASE + DEFAULT USERS
 with app.app_context():
     db.create_all()
-    if not User.query.first():
+
+    if not User.query.filter_by(username="admin").first():
         db.session.add(User(username="admin", password="admin123", role="Admin"))
+
+    if not User.query.filter_by(username="staff").first():
         db.session.add(User(username="staff", password="staff123", role="Staff"))
-        db.session.commit()
-    db.create_all()
-    if not User.query.first():
-        db.session.add(User(username="admin", password="admin123", role="Admin"))
-        db.session.add(User(username="staff", password="staff123", role="Staff"))
-        db.session.commit()
+
+    db.session.commit()
 
 # ROUTES
 @app.route('/')
