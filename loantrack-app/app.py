@@ -16,8 +16,12 @@ class User(db.Model):
     role = db.Column(db.String(20))
 
 # CREATE DB
-@app.before_first_request
-def setup():
+with app.app_context():
+    db.create_all()
+    if not User.query.first():
+        db.session.add(User(username="admin", password="admin123", role="Admin"))
+        db.session.add(User(username="staff", password="staff123", role="Staff"))
+        db.session.commit()
     db.create_all()
     if not User.query.first():
         db.session.add(User(username="admin", password="admin123", role="Admin"))
