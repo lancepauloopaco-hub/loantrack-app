@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LoanTrack Pro</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+}
+
+/* LOGIN */
+#loginScreen {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: #111827;
+  padding: 30px;
+  border-radius: 12px;
+  width: 300px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: none;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  background: #6366f1;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* APP */
+#app {
+  display: none;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background: #111827;
+  position: fixed;
+  padding: 20px;
+}
+
+.nav-item {
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  background: #1f2937;
+}
+
+/* MAIN */
+.main {
+  margin-left: 220px;
+  padding: 20px;
+}
+
+.stat-card {
+  background: #1f2937;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <h2>💰 LoanTrack Pro</h2>
+
+    <input type="text" id="loginUser" placeholder="Username">
+    <input type="password" id="loginPass" placeholder="Password">
+
+    <div id="errorMsg" style="color:red; display:none; font-size:12px;">
+      Invalid login
+    </div>
+
+    <button class="btn" onclick="doLogin()">Sign In</button>
+
+    <p style="font-size:12px; margin-top:10px;">
+      admin / admin123
+    </p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <aside class="sidebar">
+    <h3>LoanTrack</h3>
+
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item">Consumers</div>
+    <div class="nav-item">Loans</div>
+    <div class="nav-item">Payments</div>
+  </aside>
+
+  <main class="main">
+    <h2>Dashboard</h2>
+
+    <div class="stat-card">
+      Total Loans: <b id="totalLoans">0</b>
+    </div>
+
+    <div class="stat-card">
+      Active Loans: <b id="activeLoans">0</b>
+    </div>
+
+    <div class="stat-card">
+      Profit: <b id="profit">$0</b>
+    </div>
+  </main>
+</div>
+
+<script>
+async function doLogin() {
+  const username = document.getElementById("loginUser").value;
+  const password = document.getElementById("loginPass").value;
+  const error = document.getElementById("errorMsg");
+
+  const res = await fetch('/api/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  } else {
+    error.style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>

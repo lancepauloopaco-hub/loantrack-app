@@ -1,0 +1,24 @@
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+}
+
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #111827;
+  position: fixed;
+}
+
+.main {
+  margin-left: 240px;
+  padding: 20px;
+}
+
+.stat-card {
+  background: #1f2937;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px;
+}
